@@ -87,7 +87,7 @@ def post_comment_node(state: ReviewState) -> dict:
     return {"comment_posted": post}
 
  
- def build_graph():
+def build_graph():
     graph= StateGraph(ReviewState)
 
     graph.add_node("fetch_pr",fetch_pr_node)
