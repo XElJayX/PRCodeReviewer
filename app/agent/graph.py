@@ -2,6 +2,7 @@ from app.agent.state import ReviewState
 from app.tools.github_tool import GitHubTool
 from langchain_groq import ChatGroq
 from app.config import get_settings
+from langgraph.graph import StateGraph, END
 
 def fetch_pr_node(state: ReviewState) -> dict:
     tool = GitHubTool()
@@ -81,5 +82,22 @@ def post_comment_node(state: ReviewState) -> dict:
     review = state.get("review")
     
     tool = GitHubTool()
-    
+
+    post = tool.post_comment(owner,repo_name,pr_number,review)
+    return {"comment_posted": post}
+
  
+ def build_graph():
+    graph= StateGraph(ReviewState)
+
+    graph.add_node("fetch_pr",fetch_pr_node)
+    graph.add_node("analyze_code",analyze_code_node)
+    graph.add_node("post_comment",post_comment_node)
+
+    graph.set_entry_point("fetch_pr")
+
+    graph.add_edge("fetch_pr","analyze_code")
+    graph.add_edge("analyze_code","post_comment")
+    graph.add_edge("post_comment",END)
+    
+    return graph.compile()
