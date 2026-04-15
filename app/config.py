@@ -12,6 +12,7 @@ class Settings:
         self.langchain_tracing_v2 = os.getenv("LANGCHAIN_TRACING_V2", "false").lower() == "true"
         self.langchain_api_key = os.getenv("LANGCHAIN_API_KEY")
         self.langchain_project = os.getenv("LANGCHAIN_PROJECT")
+        self.webhook_secret = os.getenv("WEBHOOK_SECRET")
     
 @lru_cache()
 def get_settings():
