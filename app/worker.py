@@ -10,6 +10,11 @@ celery_app = Celery(
     backend=get_settings().redis_url
 )
 
+celery_app.conf.update(
+    worker_concurrency=1,
+    worker_prefetch_multiplier=1,
+)
+
 @celery_app.task
 def run_review_task(owner:str, repo_name:str, pr_number:int):
     agent = build_graph()
