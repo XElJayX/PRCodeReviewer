@@ -39,11 +39,11 @@ kombu==5.6.2
 langchain
 langchain-core
 langchain-groq
-langchain-text-splitters==0.3.11
+langchain-text-splitters
 langgraph
-langgraph-checkpoint==3.0.1
-langgraph-prebuilt==1.0.9
-langgraph-sdk==0.3.13
+langgraph-checkpoint
+langgraph-prebuilt
+langgraph-sdk
 langsmith
 markdown-it-py==4.0.0
 mdurl==0.1.2
