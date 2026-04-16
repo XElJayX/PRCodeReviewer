@@ -37,7 +37,6 @@ jsonpatch==1.33
 jsonpointer==3.1.1
 kombu==5.6.2
 langchain
-langchain-anthropic==0.2.0
 langchain-core
 langchain-groq
 langchain-text-splitters==0.3.11
