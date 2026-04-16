@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Request, HTTPException
-from app.agent.graph import build_graph
 import hmac
 import hashlib
 from app.config import get_settings
+from app.worker import run_review_task
 
 router = APIRouter()
 
@@ -13,7 +13,7 @@ def verify_signature(payload_bytes:bytes, signature_header: str)-> bool:
     expected_header = f"sha256={expected}"
     return hmac.compare_digest(expected_header, signature_header)
 
-    
+
 @router.post("/webhook")
 async def handle_webhook(request: Request):
     body = await request.body()
@@ -27,15 +27,7 @@ async def handle_webhook(request: Request):
         owner = payload["repository"]["owner"]["login"]
         repo_name = payload["repository"]["name"]
         pr_number = payload["number"]
-        graph = build_graph()
-        result = graph.invoke({
-            "owner": owner,
-            "repo_name": repo_name,
-            "pr_number": pr_number,
-            "pr_details": None,
-            "review": None,
-            "comment_posted": False
-        })
-        return {"status": "ok"} if result["comment_posted"] else {"status": "failed"}
+        run_review_task.delay(owner, repo_name, pr_number)
+        return {"status": "queued"}
     return {"status": "ignored"}
 

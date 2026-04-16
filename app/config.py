@@ -13,6 +13,7 @@ class Settings:
         self.langchain_api_key = os.getenv("LANGCHAIN_API_KEY")
         self.langchain_project = os.getenv("LANGCHAIN_PROJECT")
         self.webhook_secret = os.getenv("WEBHOOK_SECRET")
+        self.redis_url = os.getenv("REDIS_URL")
     
 @lru_cache()
 def get_settings():
